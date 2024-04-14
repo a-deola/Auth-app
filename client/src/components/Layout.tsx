@@ -1,12 +1,10 @@
-import Footer from "./Footer";
 import Navbar from "./Navbar";
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="text-center">
+    <div className="w-full">
       <Navbar />
       <div>{children}</div>
-      <Footer />
     </div>
   );
 }
