@@ -9,10 +9,12 @@ type FormValues = {
 };
 
 const passwordValidation =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&,.])[A-Za-z\d@$!%*?&,.]{6,}$/;
 
 export const signupSchema: ObjectSchema<FormValues> = object().shape({
-  username: string().required("Username is required"),
+  username: string()
+    .min(3, "Username should be at least 3 letters")
+    .required("Username is required"),
   email: string().email().required("Email is required"),
   password: string()
     .min(6, "Password must be at least 6 characters")
