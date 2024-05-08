@@ -1,11 +1,11 @@
 import "./App.css";
-import Layout from "./components/Layout";
+import MyRoutes from "./Routes";
 
 function App() {
   return (
-    <Layout>
-      <h2 className="text-3xl text-blue-500">Hello World</h2>
-    </Layout>
+    <div>
+      <MyRoutes />
+    </div>
   );
 }
 
