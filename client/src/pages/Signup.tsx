@@ -1,5 +1,5 @@
 import { useState, MouseEvent } from "react";
-import { Field, Formik, Form, ErrorMessage } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import Layout from "../components/Layout";
 import Input from "../components/Input";
 import FormBtm from "../components/FormBtm";
@@ -16,27 +16,27 @@ function Signup() {
     username: string;
     email: string;
     password: string;
-    confirmPassword: string;
-    agree?: boolean;
   }
 
   function handleSubmit(values: FormValues) {
+    console.log("submit invoked");
     const url = "http://localhost:3000/api/user";
     const data = {
       username: values.username.toLocaleLowerCase(),
       email: values.email,
       password: values.password,
-      confirm: values.confirmPassword,
-      agree: values.agree,
     };
     fetch(url, {
       method: "POST",
+      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        console.log({ data, response });
+        response.json();
+      })
       .then((data) => {
         console.log("Success:", data);
       })
@@ -65,7 +65,7 @@ function Signup() {
           onSubmit={handleSubmit}
         >
           {(props) => (
-            <form autoComplete="off" className="flex flex-col gap-4">
+            <Form autoComplete="off" className="flex flex-col gap-4">
               <Input
                 onAdd={props.handleChange}
                 type="text"
@@ -74,6 +74,7 @@ function Signup() {
                 value={props.values.username}
                 onBlur={props.handleBlur}
               />
+              <ErrorMessage name="username" component="div" />
               <Input
                 onAdd={props.handleChange}
                 type="email"
@@ -82,6 +83,7 @@ function Signup() {
                 value={props.values.email}
                 onBlur={props.handleBlur}
               />
+              <ErrorMessage name="email" component="div" />
               <div className="relative">
                 <input
                   onChange={props.handleChange}
@@ -92,6 +94,7 @@ function Signup() {
                   value={props.values.password}
                   onBlur={props.handleBlur}
                 />
+                <ErrorMessage name="password" component="p" />
                 {isVisible ? (
                   <button
                     onClick={(e) => toggleVisibility(e)}
@@ -117,24 +120,25 @@ function Signup() {
                 value={props.values.confirmPassword}
                 onBlur={props.handleBlur}
               />
+              <ErrorMessage name="confirmPassword" component="div" />
               <label className="flex gap-5">
                 <input
                   type="checkbox"
                   name="agree"
                   id=""
                   onChange={props.handleChange}
+                  value={props.values.agree}
                   onBlur={props.handleBlur}
-                  // value={props.values.agree}
                 />
                 <p>Agree to Our terms and Conditions</p>
               </label>
-              <LgBtn btnName="Sign Up" onAdd={() => handleSubmit} />
+              <LgBtn btnName="Sign Up" />
               <FormBtm
                 question="Already registered? "
                 prompt="Login"
                 route="/login"
               />
-            </form>
+            </Form>
           )}
         </Formik>
       </FormCon>
